@@ -1,0 +1,203 @@
+/*
+ * https://github.com/morethanwords/tweb
+ * Copyright (C) 2019-2021 Eduard Kuzmenko
+ * https://github.com/morethanwords/tweb/blob/master/LICENSE
+ */
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(.2);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.selector {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .selector-search-section {
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  &-search-container {
+    flex: 0 0 auto;
+    //flex: 1 1 auto;
+    position: relative;
+    max-height: 132px;
+    overflow: hidden;
+
+    .scrollable {
+      position: relative;
+      max-height: inherit; // fix safari
+    }
+  }
+
+  &-search {
+    // padding: 0 1.5rem;
+    padding-inline: 1rem;
+    display: flex;
+    flex-flow: wrap;
+    position: relative;
+
+    &-input {
+      border: none;
+      outline: none;
+      flex: 1 1 auto;
+    }
+
+    // ! only in this container need this padding
+    .selector-search-input {
+      padding: 7px 0px 19px 0px;
+    }
+  }
+
+  &-user {
+    color: var(--primary-text-color);
+    background-color: var(--light-secondary-text-color);
+    font-size: 1rem;
+    padding-inline-end: 17px;
+    margin-inline: -.25rem .75rem;
+    height: 2rem;
+    line-height: 2rem;
+    margin-bottom: 7px;
+    border-radius: 1.5rem;
+    user-select: none;
+    flex: 0 0 auto;
+    transition: .2s opacity, .2s transform, .2s background-color;
+    max-width: 11.25rem;
+
+    @include text-overflow();
+
+    body.animation-level-0 & {
+      transition: none;
+    }
+
+    @include hover() {
+      background-color: var(--light-danger-color);
+      cursor: pointer;
+
+      .selector-user-avatar:after {
+        opacity: 1;
+        transform: scaleX(-1) rotate(-90deg);
+      }
+    }
+
+    body:not(.animation-level-0) & {
+      &.scale-in {
+        animation: scaleIn .15s ease forwards;
+      }
+  
+      &.scale-out {
+        animation: scaleIn .1s ease forwards;
+        animation-direction: reverse;
+      }
+    }
+
+    &-avatar {
+      float: left;
+      margin-inline-end: 8px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 50% !important;
+
+      .is-rtl & {
+        float: right;
+      }
+
+      html.is-safari & {
+        -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%); // fix safari overflow
+      }
+
+      &:after {
+        position: absolute;
+        content: $tgico-close;
+        inset-inline-start: 0;
+        top: 0;
+        background-color: var(--danger-color);
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+        font-size: 1.375rem;
+        line-height: var(--size) !important;
+        opacity: 0;
+        transition: .2s opacity, .2s transform;
+        transform: scaleX(-1) rotate(0deg);
+
+        body.animation-level-0 & {
+          transition: none;
+        }
+      }
+    }
+  }
+
+  .chatlist-container {
+    height: 100%;
+    flex: 1 1 auto;
+
+    /* .scrollable > :first-child {
+      margin-top: .5rem;
+    } */
+  }
+
+  > hr {
+    margin: 0;
+    padding: 0;
+  }
+
+  .checkbox {
+    margin-top: 11px;
+    padding-inline-start: 11px;
+  }
+
+  .checkbox-field {
+    --offset-left: 0 !important;
+    pointer-events: none;
+    position: absolute !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translateY(-50%);
+    top: 50%;
+    z-index: 1;
+
+    &:first-child {
+      margin-inline: .6875rem 1.6875rem;
+    }
+  }
+
+  .checkbox-field-round {
+    inset-inline-end: 1.125rem;
+    --size: 1.25rem;
+
+    .checkbox-box-border {
+      z-index: unset;
+    }
+
+    .checkbox-box-check {
+      --offset: 6px;
+    }
+  }
+
+  &-square {
+    $add: 3rem;
+
+    .checkbox-field {
+      inset-inline-start: 1.25rem !important;
+    }
+
+    .chatlist-chat.row-with-padding {
+      padding-inline-start: #{4.5rem + $add} !important; // 4.5 + x
+    }
+
+    .dialog-avatar {
+      margin-inline-start: #{$add} !important;
+    }
+  }
+}
